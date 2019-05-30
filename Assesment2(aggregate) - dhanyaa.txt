@@ -1,4 +1,0 @@
-
-select ProductId,Quantity from [Order Details] where Quantity>10
-
-select sum(Total_Amount) As Sumamount from fact_sales
