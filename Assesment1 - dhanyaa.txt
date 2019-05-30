@@ -1,0 +1,74 @@
+drop table Dept_DH
+create table Emp_DH(EmpId int  primary key,EmpName varchar(50),DeptId int)
+Insert into Emp_DH select 101,'abi',1 union all
+                   select 102,null,2 union all
+				   select 103,'cin',3 union all
+				   select 104,null,4 union all
+				   select 105,'Eli',5 
+
+create table Dept_DH(DeptId int primary key,DeptName varchar(50))
+Insert into Dept_DH values(1,'HR'),(2,'DEV'),(3,'DATA'),(4,'QA'),(5,'BN')
+
+Alter table Emp_DH add Salary int
+
+UPDATE Emp_DH
+SET    Salary = 
+       CASE EmpId
+            WHEN 101 THEN 10000
+            WHEN 102 THEN 20000
+            WHEN 103 THEN 30000
+            WHEN 104 THEN 40000
+            WHEN 105 THEN 50000
+           
+       END
+WHERE  EmpId IN (101, 102, 103, 104, 105);
+
+UPDATE Dept_DH
+SET    DeptName = 
+       CASE DeptId
+            WHEN 1 THEN 'HR'
+            WHEN 2 THEN 'finance'
+            WHEN 3 THEN 'DATA'
+            WHEN 4 THEN 'QA'
+            WHEN 5 THEN null
+           
+       END
+WHERE  DeptId IN (1,2,3,4,5);
+
+
+
+Select * from  Dept_DH                                                                     
+Select * from  Emp_DH
+
+Select A.EmpName,B.DeptName from Emp_DH As A full join Dept_DH As B on A.DeptId=B.DeptId where EmpName is Null --dept dont have emp
+
+Select A.EmpName,B.DeptName from Emp_DH As A full join Dept_DH As B on A.DeptId=B.DeptId where DeptName is Null --employee dont have any dept
+
+Alter table Emp_DH add constraint Fk_Empdetails_depti Foreign key (DeptId) references dept_dh (DeptId)
+
+alter table Emp_DH add constraint chk_salllldd check (salary >1000)
+
+insert into Emp_DH values(10,'fgwdqwfwdbh',5,43223)
+
+alter table Emp_DH add Date2 date default getdate() 
+
+insert into Emp_DH (EmpId,EmpName,DeptId,Salary,Date)
+            select 107,'gs',5,70000,'2-2-2019'
+
+
+			select*from emp_dh
+
+			alter table emp_dh drop column Date
+			sp_help emp_dh
+
+
+			update emp_dh
+			set Date2=
+			 case when empid=101 then getdate()
+						when empid=102 then getdate()
+						when empid=103 then getdate()
+						when empid=104 then getdate()
+						when empid=105 then getdate()
+						when empid=106 then getdate()
+							when empid=107 then getdate()
+						END
