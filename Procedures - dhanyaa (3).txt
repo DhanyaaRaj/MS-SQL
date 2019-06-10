@@ -1,0 +1,62 @@
+create procedure dbo.Dh_emp_headers
+as 
+begin
+drop table empheaders
+create table empheaders (eid int primary key,ename varchar(100),title  varchar(100),deptid int,mgrid int,salary decimal(10,2))
+insert into empheaders select 1,'Jackson','Trainee',1,2,42000.00
+ union all select 2,'Peter','Tech',2,null,25000
+ union all select 3,'John','Sales',3,5,35000.00
+ union all select 4,'Eliza','Trainee',1,1,80000.00
+ union all select 5,'Aniya','software eng',4,3,null
+ union all select 6,'halan','software eng',4,2,92000.00
+ union all select 7,'vion','Tech',2,6,13000.00
+ union all select 8,'minion','Sales',3,null,70000.00
+ end
+
+ Select * from empheaders
+
+ exec dbo.Dh_emp_headers
+
+ create procedure Dh_dept
+as
+begin
+ create table deptheader (deptid int primary key,deptname varchar(100))
+ insert into deptheader select 1,'HR'
+ union all select 2,'Dev'
+ union all select 3,'QA'
+ union all select 4,'Business'
+ union all select 5,'Analytics'
+ end
+
+
+ select * from deptheader 
+ exec Dh_dept
+
+--1
+alter PROCEDURE Dh_emp_headers (@eid int ,@ename varchar(100),@title  varchar(100),@deptid int,@mgrid int,@salary decimal(10,2))
+AS
+BEGIN
+INSERT INTO empheaders 
+VALUES
+(@eid ,@ename ,@title ,@deptid ,@mgrid,@salary) 
+END
+
+EXEC Dh_emp_headers 9,'Tom','TRAINEE',5,1,55000.00
+
+--2
+
+alter procedure Dh_emp_headers(@eid int)
+as 
+begin
+ select e.eid,e.ename,e.mgrid,m.ename as Manager from empheaders e
+  join empheaders m on e.mgrid =m.eid
+ where e.eid =@eid
+ end
+
+exec Dh_emp_headers 5
+
+--3
+select * from empheaders e1
+where 3 >= (select count(distinct salary)from empheaders e2 where e2.salary >= e1.salary )  
+and salary is not null
+order by salary desc
