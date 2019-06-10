@@ -1,0 +1,81 @@
+SELECT * FROM EMP
+SELECT * FROM dept
+
+
+--1
+select distinct mgr,min(sal) over (partition by mgr order by mgr) as minsal
+from dept d inner join emp e
+on d.DEPTNO=e.DEPT
+where mgr is not null
+group by mgr,SAL
+having sal > 6000
+
+
+--2
+select d.DNAME as name,d.LOC as location, Count(*) as numberofpepole,round(avg(sal),2) as avgsalary
+from EMP e inner join  DEPT d
+on d.DEPTNO =e.DEPT
+group by dname,loc
+
+--3
+select d.DNAME as name,d.DEPTNO , Count(*) over(partition by deptno order by deptno )as numberofpepole,
+avg(sal) over(partition by deptno order by deptno ) as avgsal,e.ENAME,e.JOB
+from EMP e inner join  DEPT d
+on d.DEPTNO =e.DEPT
+group by dname,DEPTNO,ENAME,JOB,SAL
+
+--4 
+select  deptno,min(sal) as minsal,avg(sal) as avgsal
+from dept d inner join emp e
+on d.DEPTNO=e.DEPT
+group by DEPTNO
+order by avgsal desc
+
+--5
+select Deptno,dname,loc from DEPT
+where dname != 'SALES'
+
+--6
+--a
+;with
+cte
+as
+(
+Select Deptno,dname,count(*) as numofemp
+from DEPT d inner join emp e
+on d.DEPTNO=e.DEPT
+group by DEPTNO,DNAME
+)
+select * from cte
+where numofemp <3
+
+--b
+Select top 1 Deptno,dname,count(*) as numofemp
+from DEPT d inner join emp e
+on d.DEPTNO=e.DEPT
+group by DEPTNO,DNAME 
+order by numofemp desc
+
+--c
+Select top 1 Deptno,dname,count(*) as numofemp
+from DEPT d inner join emp e
+on d.DEPTNO=e.DEPT
+group by DEPTNO,DNAME
+order by numofemp 
+
+--7
+select job,count(job) as numofppl from emp
+group by job
+
+--8 
+select count(distinct mgr) as numofmgr from EMP
+
+--9	
+select max(sal) - min(sal) difference from emp
+
+--10
+Select round(max(sal),2) as maximum, round(min(sal),2) as minimum, round(sum(sal),2) as Sum, round(avg(sal),2) as Average
+from EMP
+
+
+
